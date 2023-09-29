@@ -5,6 +5,15 @@ import IsFooter from '../components/IsFooter.vue';
 
 <template>
 	<IsHeader />
-	<slot />
+	<div class="wrapper">
+		<div class="container">
+			<slot />
+		</div>
+	</div>
 	<IsFooter />
 </template>
+<style scoped lang="scss">
+.wrapper {
+	padding: 30px 0;
+}
+</style>

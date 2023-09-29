@@ -124,3 +124,18 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a {
+	color: inherit;
+	text-decoration: none;
+	display: inline-block;
+}
+
+img {
+	display: block;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}

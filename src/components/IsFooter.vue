@@ -8,8 +8,16 @@
 	</footer>
 </template>
 
-<style scoped>
-.read-the-docs {
-	color: #888;
+<style scoped lang="scss">
+@import './../assets/scss/vars.scss';
+.footer {
+	background-color: #fafafa;
+	&__inner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 76px;
+		color: #111;
+	}
 }
 </style>
