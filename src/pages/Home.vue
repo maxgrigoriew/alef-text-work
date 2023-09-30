@@ -15,7 +15,6 @@ const child = reactive({
 	age: '',
 });
 
-const countChildren = ref(0);
 const limitChildren = ref(2);
 
 const addChild = () => {
@@ -52,15 +51,14 @@ const childrenCount = computed(() =>
 );
 
 onMounted(() => {
-	const parentStorage = localStorage.getItem('parent');
-	const childrenStorage = localStorage.getItem('children');
-	if (parentStorage) {
-		// parent = JSON.parse(childrenStorage);
-	}
+	const parentStorage = JSON.parse(localStorage.getItem('parent'));
+	const childrenStorage = JSON.parse(localStorage.getItem('children'));
+	parent.name = parentStorage.name;
+	parent.age = parentStorage.age;
 
-	if (childrenStorage.length > 0) {
-		// children = JSON.parse(childrenStorage);
-	}
+	childrenStorage.forEach((element) => {
+		children.value.push(element);
+	});
 });
 </script>
 
