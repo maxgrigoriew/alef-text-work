@@ -40,6 +40,7 @@ const className = computed(() => ({
 	cursor: pointer;
 	line-height: 24px;
 	display: inline-flex;
+	justify-content: center;
 	align-items: center;
 
 	&__icon {

@@ -1,5 +1,10 @@
 <script setup>
-const props = defineProps(['label', 'placeholder']);
+import { computed } from 'vue';
+const props = defineProps(['label', 'placeholder', 'disabled', 'modelValue']);
+const emits = defineEmits(['modelValue']);
+const className = computed(() => ({
+	disabled: props.disabled,
+}));
 </script>
 <template>
 	<div class="input">
@@ -9,10 +14,14 @@ const props = defineProps(['label', 'placeholder']);
 			</div>
 		</label>
 		<input
+			:disabled="props.disabled"
 			id="input"
 			class="input__text"
+			:class="className"
 			type="text"
 			:placeholder="props.placeholder"
+			:value="modelValue"
+			@input="$emit('update:modelValue', $event.target.value)"
 		/>
 	</div>
 </template>
@@ -41,5 +50,9 @@ const props = defineProps(['label', 'placeholder']);
 		border: none;
 		line-height: 24px;
 	}
+}
+
+.disabled {
+	background-color: $light-color;
 }
 </style>

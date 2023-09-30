@@ -4,16 +4,26 @@ import IsFooter from '../components/IsFooter.vue';
 </script>
 
 <template>
-	<IsHeader />
-	<div class="wrapper">
-		<div class="container">
-			<slot />
+	<div class="page-wrapper">
+		<IsHeader />
+		<div class="page-content">
+			<div class="container">
+				<slot />
+			</div>
 		</div>
+		<IsFooter class="layout-footer" />
 	</div>
-	<IsFooter />
 </template>
 <style scoped lang="scss">
-.wrapper {
+.page-wrapper {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+.page-content {
 	padding: 30px 0;
+}
+.layout-footer {
+	margin-top: auto;
 }
 </style>
