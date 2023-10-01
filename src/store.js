@@ -15,11 +15,11 @@ export const store = createStore({
 		children: [],
 	},
 	getters: {
-		getParent: (state) => {
-			return state.parents;
+		getParent: () => {
+			return JSON.parse(localStorage.getItem('parent'));
 		},
-		getChildren: (state) => {
-			return state.children;
+		getChildren: () => {
+			return JSON.parse(localStorage.getItem('children'));
 		},
 	},
 	mutations: {
@@ -36,13 +36,18 @@ export const store = createStore({
 
 		initialData(state) {
 			const parentStorage = JSON.parse(localStorage.getItem('parent'));
-			const childrenStorage = JSON.parse(localStorage.getItem('children'));
 			state.parent.name = parentStorage.name;
 			state.parent.age = parentStorage.age;
+			console.log(!!JSON.parse(localStorage.getItem('children')));
 
-			childrenStorage.forEach((element) => {
-				state.children.push(element);
-			});
+			if (!!JSON.parse(localStorage.getItem('children'))) {
+				const childrenStorage = JSON.parse(localStorage.getItem('children'));
+
+				childrenStorage.forEach((element) => {
+					state.children.length = 0;
+					state.children.push(element);
+				});
+			}
 		},
 
 		checkValidForm(state) {

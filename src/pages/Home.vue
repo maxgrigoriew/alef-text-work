@@ -29,6 +29,8 @@ onMounted(() => {
 </script>
 
 <template>
+	<!-- {{ store.state.children }} -->
+	{{ store.getters.getChildren }}
 	<p class="title">Персональные данные</p>
 	<is-input
 		class="input-name"
@@ -44,10 +46,6 @@ onMounted(() => {
 		v-model="store.state.parent.age"
 	>
 	</is-input>
-	<!-- children -->
-
-	{{ store.state.parent }}
-	{{ store.state.children }}
 	<div class="grid">
 		<div class="grid__top">
 			<h2 class="title grid__title">Дети (макс. 5)</h2>
@@ -62,23 +60,11 @@ onMounted(() => {
 		<ul class="grid__list">
 			<li
 				class="grid__item"
-				v-for="(item, index) in store.state.children"
+				v-for="(item, index) in store.getters.getChildren"
 				:key="item.id"
 			>
-				<is-input
-					class="input"
-					label="Имя"
-					v-model="store.state.children[index].name"
-					placeholder="Имя"
-				>
-				</is-input>
-				<is-input
-					class="input"
-					label="Имя"
-					v-model="store.state.children[index].age"
-					placeholder="Возраст"
-				>
-				</is-input>
+				<is-input class="input" label="Имя" placeholder="Имя"> </is-input>
+				<is-input class="input" label="Имя" placeholder="Возраст"> </is-input>
 				<is-button @click="removeChild(item.id)" class="grid__link" link="true"
 					>Удалить</is-button
 				>
