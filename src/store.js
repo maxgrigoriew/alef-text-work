@@ -5,26 +5,16 @@ export const store = createStore({
 		parent: {
 			name: '',
 			age: '',
-			id: Date.now(),
 		},
 		child: {
 			name: '',
 			age: '',
-			id: Date.now(),
 		},
 		children: [],
 	},
-	getters: {
-		getParent: () => {
-			return JSON.parse(localStorage.getItem('parent'));
-		},
-		getChildren: () => {
-			return JSON.parse(localStorage.getItem('children'));
-		},
-	},
 	mutations: {
 		addChild(state) {
-			state.children.push(state.child);
+			state.children.push({ ...state.child, id: Date.now() });
 		},
 		removeChild(state, id) {
 			state.children = state.children.filter((item) => item.id !== id);
@@ -33,18 +23,24 @@ export const store = createStore({
 			localStorage.setItem('parent', JSON.stringify(state.parent));
 			localStorage.setItem('children', JSON.stringify(state.children));
 		},
+		setParentName(state, value) {
+			state.parent.name = value;
+		},
+		setParentAge(state, value) {
+			state.parent.age = value;
+		},
 
 		initialData(state) {
 			const parentStorage = JSON.parse(localStorage.getItem('parent'));
 			state.parent.name = parentStorage.name;
 			state.parent.age = parentStorage.age;
-			console.log(!!JSON.parse(localStorage.getItem('children')));
 
-			if (!!JSON.parse(localStorage.getItem('children'))) {
-				const childrenStorage = JSON.parse(localStorage.getItem('children'));
+			const children = JSON.parse(localStorage.getItem('children'));
+			if (children) {
+				const childrenStorage = children;
 
+				state.children.length = 0;
 				childrenStorage.forEach((element) => {
-					state.children.length = 0;
 					state.children.push(element);
 				});
 			}

@@ -1,49 +1,58 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import IsInput from './../components/UI/IsInput.vue';
 import IsButton from './../components/UI/IsButton.vue';
 import { useStore } from 'vuex';
+
 const store = useStore();
 
 const limitChildren = ref(5);
 
-const addChild = () => {
-	store.commit('addChild');
-};
+const parentName = computed({
+	get() {
+		return store.state.parent.name;
+	},
+	set(value) {
+		store.commit('setParentName', value);
+	},
+});
 
-const removeChild = (id) => {
-	store.commit('removeChild', id);
-};
+const parentAge = computed({
+	get() {
+		return store.state.parent.age;
+	},
+	set(value) {
+		store.commit('setParentAge', value);
+	},
+});
 
-const saveForm = () => {
-	store.commit('saveForm');
-};
+const addChild = () => store.commit('addChild');
+
+const removeChild = (id) => store.commit('removeChild', id);
+
+const saveForm = () => store.commit('saveForm');
 
 const childrenCount = computed(() =>
 	store.state.children.length < limitChildren.value ? true : false
 );
 
-onMounted(() => {
-	store.commit('initialData');
-});
+onMounted(() => store.commit('initialData'));
 </script>
 
 <template>
-	<!-- {{ store.state.children }} -->
-	{{ store.getters.getChildren }}
 	<p class="title">Персональные данные</p>
 	<is-input
 		class="input-name"
 		label="Имя"
 		placeholder="Имя"
-		v-model="store.state.parent.name"
+		v-model="parentName"
 	></is-input>
 
 	<is-input
 		class="input"
 		label="Возраст"
 		placeholder="Возраст"
-		v-model="store.state.parent.age"
+		v-model="parentAge"
 	>
 	</is-input>
 	<div class="grid">
@@ -60,11 +69,22 @@ onMounted(() => {
 		<ul class="grid__list">
 			<li
 				class="grid__item"
-				v-for="(item, index) in store.getters.getChildren"
+				v-for="(item, index) in store.state.children"
 				:key="item.id"
 			>
-				<is-input class="input" label="Имя" placeholder="Имя"> </is-input>
-				<is-input class="input" label="Имя" placeholder="Возраст"> </is-input>
+				<is-input
+					class="input"
+					label="Имя"
+					placeholder="Имя"
+					v-model="store.state.children[index].name"
+				></is-input>
+				<is-input
+					class="input"
+					label="Имя"
+					placeholder="Возраст"
+					v-model="store.state.children[index].age"
+				>
+				</is-input>
 				<is-button @click="removeChild(item.id)" class="grid__link" link="true"
 					>Удалить</is-button
 				>

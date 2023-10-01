@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
@@ -21,20 +21,25 @@ const checkAge = (age) => {
 	return txt;
 };
 
-const getParent = computed(() => store.getters.getParent);
-const getChildren = computed(() => store.getters.getChildren);
+onMounted(() => {
+	store.commit('initialData');
+});
 </script>
 <!-- asd -->
 <template>
 	<div class="about">
 		<h2 class="title about__title">Персональные данные</h2>
 		<div class="about__parent">
-			{{ `${getParent.name} ${getParent.age}` }}
+			{{ `${store.state.parent.name} ${store.state.parent.age}` }}
 		</div>
 		<h2 class="title about__title">Дети</h2>
 
 		<ul class="about__list">
-			<li class="about__item" v-for="item in getChildren" :key="item.id">
+			<li
+				class="about__item"
+				v-for="item in store.state.children"
+				:key="item.id"
+			>
 				<span class="about__item-info">
 					{{ `${item.name}, ${item.age} ${checkAge(item.age)}` }}
 				</span>
