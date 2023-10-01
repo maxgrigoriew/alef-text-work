@@ -24,6 +24,7 @@ const checkAge = (age) => {
 const getParent = computed(() => store.getters.getParent);
 const getChildren = computed(() => store.getters.getChildren);
 </script>
+<!-- asd -->
 <template>
 	<div class="about">
 		<h2 class="title about__title">Персональные данные</h2>
