@@ -2,86 +2,52 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue';
 import IsInput from './../components/UI/IsInput.vue';
 import IsButton from './../components/UI/IsButton.vue';
+import { useStore } from 'vuex';
+const store = useStore();
 
-let children = ref([]);
-
-const parent = reactive({
-	name: '',
-	age: '',
-});
-
-const child = reactive({
-	name: '',
-	age: '',
-});
-
-const limitChildren = ref(2);
+const limitChildren = ref(5);
 
 const addChild = () => {
-	const newChild = {
-		name: '',
-		age: '',
-		id: Date.now(),
-	};
-	children.value.push(newChild);
-	console.log(children.value);
+	store.commit('addChild');
 };
 
 const removeChild = (id) => {
-	console.log(id);
-	children.value = children.value.filter((item) => item.id !== id);
+	store.commit('removeChild', id);
 };
 
-const checkValidForm = () => {
-	if (!parent.age || !parent.age) {
-		return false;
-	} else {
-		return true;
-	}
-};
 const saveForm = () => {
-	if (checkValidForm()) {
-		console.log('valid');
-		localStorage.setItem('parent', JSON.stringify(parent));
-		localStorage.setItem('children', JSON.stringify(children.value));
-	}
+	store.commit('saveForm');
 };
+
 const childrenCount = computed(() =>
-	children.value.length < limitChildren.value ? true : false
+	store.state.children.length < limitChildren.value ? true : false
 );
 
 onMounted(() => {
-	const parentStorage = JSON.parse(localStorage.getItem('parent'));
-	const childrenStorage = JSON.parse(localStorage.getItem('children'));
-	parent.name = parentStorage.name;
-	parent.age = parentStorage.age;
-
-	childrenStorage.forEach((element) => {
-		children.value.push(element);
-	});
+	store.commit('initialData');
 });
 </script>
 
 <template>
-	parent {{ parent }} <br />
-	children {{ children }}
 	<p class="title">Персональные данные</p>
 	<is-input
 		class="input-name"
 		label="Имя"
 		placeholder="Имя"
-		v-model="parent.name"
+		v-model="store.state.parent.name"
 	></is-input>
 
 	<is-input
 		class="input"
 		label="Возраст"
 		placeholder="Возраст"
-		v-model="parent.age"
+		v-model="store.state.parent.age"
 	>
 	</is-input>
 	<!-- children -->
 
+	{{ store.state.parent }}
+	{{ store.state.children }}
 	<div class="grid">
 		<div class="grid__top">
 			<h2 class="title grid__title">Дети (макс. 5)</h2>
@@ -94,18 +60,22 @@ onMounted(() => {
 			>
 		</div>
 		<ul class="grid__list">
-			<li class="grid__item" v-for="(item, index) in children" :key="item.id">
+			<li
+				class="grid__item"
+				v-for="(item, index) in store.state.children"
+				:key="item.id"
+			>
 				<is-input
 					class="input"
 					label="Имя"
-					v-model="children[index].name"
+					v-model="store.state.children[index].name"
 					placeholder="Имя"
 				>
 				</is-input>
 				<is-input
 					class="input"
 					label="Имя"
-					v-model="children[index].age"
+					v-model="store.state.children[index].age"
 					placeholder="Возраст"
 				>
 				</is-input>
