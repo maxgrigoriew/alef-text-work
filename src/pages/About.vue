@@ -45,6 +45,8 @@ onMounted(() => {
 				</span>
 			</li>
 		</ul>
+
+		<p v-if="!store.state.children.length" class="about__info">Детей нет</p>
 	</div>
 </template>
 
@@ -70,6 +72,11 @@ onMounted(() => {
 		border-radius: 5px;
 		background: #f1f1f1;
 		padding: 10px 20px;
+	}
+	&__info {
+		padding-top: 20px;
+		color: $accent-color;
+		font-weight: 500;
 	}
 }
 </style>

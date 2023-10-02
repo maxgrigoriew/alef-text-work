@@ -20,8 +20,24 @@ export const store = createStore({
 			state.children = state.children.filter((item) => item.id !== id);
 		},
 		saveForm(state) {
-			localStorage.setItem('parent', JSON.stringify(state.parent));
-			localStorage.setItem('children', JSON.stringify(state.children));
+			let isValid = true;
+
+			if (!state.parent.name || !state.parent.age) {
+				isValid = false;
+				alert('Заполните поля');
+			}
+			state.children.forEach((item) => {
+				if (item.name == '' || item.age == '') {
+					isValid = false;
+					alert('Заполните поля');
+				}
+			});
+
+			if (isValid) {
+				localStorage.setItem('parent', JSON.stringify(state.parent));
+				localStorage.setItem('children', JSON.stringify(state.children));
+				alert('Сохранено');
+			}
 		},
 		setParentName(state, value) {
 			state.parent.name = value;
@@ -31,9 +47,11 @@ export const store = createStore({
 		},
 
 		initialData(state) {
-			const parentStorage = JSON.parse(localStorage.getItem('parent'));
-			state.parent.name = parentStorage.name;
-			state.parent.age = parentStorage.age;
+			if (store.parent) {
+				const parentStorage = JSON.parse(localStorage.getItem('parent'));
+				state.parent.name = parentStorage.name;
+				state.parent.age = parentStorage.age;
+			}
 
 			const children = JSON.parse(localStorage.getItem('children'));
 			if (children) {
@@ -43,14 +61,6 @@ export const store = createStore({
 				childrenStorage.forEach((element) => {
 					state.children.push(element);
 				});
-			}
-		},
-
-		checkValidForm(state) {
-			if (!state.parent.age || !state.parent.age) {
-				return false;
-			} else {
-				return true;
 			}
 		},
 	},

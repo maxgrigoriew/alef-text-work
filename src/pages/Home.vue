@@ -30,7 +30,9 @@ const addChild = () => store.commit('addChild');
 
 const removeChild = (id) => store.commit('removeChild', id);
 
-const saveForm = () => store.commit('saveForm');
+const saveForm = () => {
+	store.commit('saveForm');
+};
 
 const childrenCount = computed(() =>
 	store.state.children.length < limitChildren.value ? true : false
@@ -53,6 +55,7 @@ onMounted(() => store.commit('initialData'));
 		label="Возраст"
 		placeholder="Возраст"
 		v-model="parentAge"
+		type="number"
 	>
 	</is-input>
 	<div class="grid">
@@ -83,6 +86,7 @@ onMounted(() => store.commit('initialData'));
 					label="Имя"
 					placeholder="Возраст"
 					v-model="store.state.children[index].age"
+					type="number"
 				>
 				</is-input>
 				<is-button @click="removeChild(item.id)" class="grid__link" link="true"

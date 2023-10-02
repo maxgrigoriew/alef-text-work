@@ -1,13 +1,20 @@
 <script setup>
 import { computed } from 'vue';
-const props = defineProps(['label', 'placeholder', 'disabled', 'modelValue']);
+const props = defineProps([
+	'label',
+	'placeholder',
+	'disabled',
+	'modelValue',
+	'type',
+]);
 const emits = defineEmits(['modelValue']);
 const className = computed(() => ({
 	disabled: props.disabled,
+	notValid: props.modelValue === '',
 }));
 </script>
 <template>
-	<div class="input">
+	<div class="input" :class="className">
 		<label class="input__label" for="#input">
 			<div class="input__title">
 				<slot> {{ props.label }}</slot>
@@ -18,7 +25,7 @@ const className = computed(() => ({
 			id="input"
 			class="input__text"
 			:class="className"
-			type="text"
+			:type="type"
 			:placeholder="props.placeholder"
 			:value="modelValue"
 			@input="$emit('update:modelValue', $event.target.value)"
@@ -31,7 +38,7 @@ const className = computed(() => ({
 	position: relative;
 	z-index: 1;
 	border-radius: 4px;
-	border: 1px solid #f1f1f1;
+	border: 2px solid #f1f1f1;
 
 	&__label {
 		position: absolute;
@@ -49,6 +56,9 @@ const className = computed(() => ({
 		font-family: inherit;
 		border: none;
 		line-height: 24px;
+	}
+	&.notValid {
+		border: 2px solid rgba(239, 58, 58, 0.623);
 	}
 }
 
